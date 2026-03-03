@@ -150,6 +150,10 @@ function App() {
 
         {/* Sidebar Items */}
         <nav className="flex flex-col gap-1 px-3 py-4 flex-1">
+          <div className="px-4 py-3 rounded-xl hover:bg-indigo-800/60 transition-all">
+            <ReminderManager />
+          </div>
+
           <button
             onClick={() => { setIsSearchOpen(true); setIsSidebarOpen(false); }}
             className="flex items-center gap-3 px-4 py-3 rounded-xl text-indigo-300 hover:bg-indigo-800/60 hover:text-white transition-all text-left"
@@ -167,10 +171,6 @@ function App() {
               <span className="font-medium">Relembre</span>
             </button>
           )}
-
-          <div className="px-4 py-3 rounded-xl hover:bg-indigo-800/60 transition-all">
-            <ReminderManager />
-          </div>
 
           <button
             onClick={() => { setIsHistoryOpen(true); setIsSidebarOpen(false); }}

@@ -23,7 +23,7 @@ const VerseCard: React.FC<VerseCardProps> = ({ onNewVerse }) => {
   const [showHint, setShowHint] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [referenceSolved, setReferenceSolved] = useState(false);
+
   const [referenceOptions, setReferenceOptions] = useState<string[]>([]);
 
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -34,13 +34,14 @@ const VerseCard: React.FC<VerseCardProps> = ({ onNewVerse }) => {
     setShowHint(false);
     setIsCorrect(false);
     setError(null);
-    setReferenceSolved(false);
+
+    setReferenceOptions([]);
     window.speechSynthesis.cancel();
     setIsSpeaking(false);
 
     if (currentVerse) {
-      if (currentDay === 3) {
-        // Setup Reference Quiz for Day 3
+      if (currentDay === 4) {
+        // Setup Reference Quiz for Day 4
         const options = [currentVerse.reference, ...(currentVerse.fakeReferences || [])];
         setReferenceOptions(options.sort(() => Math.random() - 0.5));
       } else if (currentDay === 5) {
