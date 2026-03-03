@@ -126,7 +126,7 @@ const VerseCard: React.FC<VerseCardProps> = ({ onNewVerse }) => {
     >
       <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-pink-500 to-indigo-500 z-20" />
 
-      <div className="relative z-10 flex flex-col justify-center h-full">
+      <div className="relative z-10 flex flex-col justify-center min-h-[inherit] pb-2">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentDay}
@@ -161,17 +161,17 @@ const VerseCard: React.FC<VerseCardProps> = ({ onNewVerse }) => {
                 <p className="text-indigo-200 text-lg mb-8">Você memorizou o versículo da semana!</p>
 
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => {
                     setIsCorrect(false);
                     addToHistory(currentVerse);
                     onNewVerse();
                   }}
-                  className="bg-green-500 text-white px-8 py-4 rounded-full font-bold shadow-xl hover:bg-green-600 transition-colors w-full max-w-sm mx-auto flex items-center justify-center gap-2 text-lg"
+                  className="bg-emerald-500 text-white px-8 py-4 rounded-2xl font-bold shadow-xl shadow-emerald-500/20 hover:bg-emerald-400 transition-all w-full max-w-sm mx-auto flex items-center justify-center gap-2 text-base md:text-lg"
                 >
-                  <RefreshCw size={24} />
-                  Começar novo versículo
+                  <RefreshCw size={22} />
+                  <span>Começar novo versículo</span>
                 </motion.button>
               </>
             ) : (

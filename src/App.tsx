@@ -8,13 +8,13 @@ import DayNavigator from './components/DayNavigator';
 import VerseCard from './components/VerseCard';
 import { BookOpen, RefreshCw, History, Sparkles, Award, LogIn, LogOut, User as UserIcon, Search, Cloud, CloudOff } from 'lucide-react';
 import { motion } from 'motion/react';
-import { HistoryModal } from './components/HistoryModal';
+import { HistoryPage } from './components/HistoryPage';
 import ReminderManager from './components/ReminderManager';
 import { usePWAInstall } from './hooks/usePWAInstall';
 import InstallPromptModal from './components/InstallPromptModal';
 import { AuthModal } from './components/AuthModal';
 import { ProfileModal } from './components/ProfileModal';
-import { SearchModal } from './components/SearchModal';
+import { SearchPage } from './components/SearchPage';
 import { supabase } from './services/supabase';
 
 
@@ -25,11 +25,10 @@ function App() {
     user, setUser, setSession, loadFromSupabase,
     handleOnline, isSyncing, pendingSync,
   } = useStore();
-  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [activeView, setActiveView] = useState<'home' | 'search' | 'history'>('home');
   const [isAchievementsOpen, setIsAchievementsOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [recallVerse, setRecallVerse] = useState<Verse | null>(null);
   const { isInstallAvailable, handleInstallClick } = usePWAInstall();
@@ -78,6 +77,7 @@ function App() {
 
   const handleSearchMemorize = (verse: Verse) => {
     setVerse(verse); // já reseta o ciclo internamente
+    setActiveView('home');
   };
 
   const loadNewVerse = async () => {
@@ -155,11 +155,19 @@ function App() {
           </div>
 
           <button
-            onClick={() => { setIsSearchOpen(true); setIsSidebarOpen(false); }}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-indigo-300 hover:bg-indigo-800/60 hover:text-white transition-all text-left"
+            onClick={() => { setActiveView('search'); setIsSidebarOpen(false); }}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-left ${activeView === 'search' ? 'bg-indigo-800 text-white shadow-lg shadow-indigo-900/40 ring-1 ring-indigo-500/20' : 'text-indigo-300 hover:bg-indigo-800/60 hover:text-white'}`}
           >
             <Search size={20} />
             <span className="font-medium">Buscar Versículo</span>
+          </button>
+
+          <button
+            onClick={() => { setActiveView('history'); setIsSidebarOpen(false); }}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-left ${activeView === 'history' ? 'bg-indigo-800 text-white shadow-lg shadow-indigo-900/40 ring-1 ring-indigo-500/20' : 'text-indigo-300 hover:bg-indigo-800/60 hover:text-white'}`}
+          >
+            <History size={20} />
+            <span className="font-medium">Histórico</span>
           </button>
 
           {history.length > 0 && (
@@ -171,14 +179,6 @@ function App() {
               <span className="font-medium">Relembre</span>
             </button>
           )}
-
-          <button
-            onClick={() => { setIsHistoryOpen(true); setIsSidebarOpen(false); }}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-indigo-300 hover:bg-indigo-800/60 hover:text-white transition-all text-left"
-          >
-            <History size={20} />
-            <span className="font-medium">Histórico</span>
-          </button>
 
           <button
             onClick={() => { setIsAchievementsOpen(true); setIsSidebarOpen(false); }}
@@ -198,44 +198,47 @@ function App() {
             {/* Hamburger Button */}
             <button
               onClick={() => setIsSidebarOpen(true)}
-              className="flex flex-col gap-1.5 p-2 rounded-lg hover:bg-indigo-800/50 transition-colors"
+              className="flex flex-col gap-1 md:gap-1.5 p-1.5 md:p-2 rounded-lg hover:bg-indigo-800/50 transition-colors"
               aria-label="Abrir menu"
             >
-              <span className="block w-5 h-0.5 bg-indigo-300 rounded-full" />
-              <span className="block w-5 h-0.5 bg-indigo-300 rounded-full" />
-              <span className="block w-5 h-0.5 bg-indigo-300 rounded-full" />
+              <span className="block w-4 md:w-5 h-0.5 bg-indigo-300 rounded-full" />
+              <span className="block w-4 md:w-5 h-0.5 bg-indigo-300 rounded-full" />
+              <span className="block w-4 md:w-5 h-0.5 bg-indigo-300 rounded-full" />
             </button>
 
-            <div className="flex items-center gap-2 text-yellow-400">
-              <BookOpen size={28} strokeWidth={2.5} />
-              <h1 className="text-xl font-bold tracking-tight text-white">MemorizaBíblia</h1>
-            </div>
+            <button
+              onClick={() => setActiveView('home')}
+              className="flex items-center gap-1.5 md:gap-2 text-yellow-400 group focus:outline-none"
+            >
+              <BookOpen size={22} strokeWidth={2.5} className="md:w-7 md:h-7 group-hover:scale-110 transition-transform" />
+              <h1 className="text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-yellow-400 transition-colors">MemorizaBíblia</h1>
+            </button>
           </div>
 
           {/* Right side: Indicador de sync + Novo Versículo + Auth Controls */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 md:gap-2">
             {/* Indicador de sincronização (apenas para usuários logados) */}
             {user && (
               <div
                 title={isSyncing ? 'Sincronizando...' : pendingSync ? 'Dados pendentes — offline' : 'Sincronizado'}
-                className={`flex items-center justify-center w-7 h-7 rounded-lg transition-all ${isSyncing
+                className={`flex items-center justify-center w-6 h-6 md:w-7 md:h-7 rounded-lg transition-all ${isSyncing
                   ? 'text-yellow-400 animate-pulse'
                   : pendingSync
                     ? 'text-orange-400'
                     : 'text-indigo-500'
                   }`}
               >
-                {pendingSync ? <CloudOff size={15} /> : <Cloud size={15} className={isSyncing ? 'animate-pulse' : ''} />}
+                {pendingSync ? <CloudOff size={13} className="md:w-[15px] md:h-[15px]" /> : <Cloud size={13} className={`md:w-[15px] md:h-[15px] ${isSyncing ? 'animate-pulse' : ''}`} />}
               </div>
             )}
             {/* Novo Versículo */}
             <button
               onClick={loadNewVerse}
               disabled={isLoading}
-              className="flex items-center gap-2 px-3 py-2 rounded-xl bg-indigo-800/60 hover:bg-indigo-700/70 transition-all text-indigo-200 hover:text-white disabled:opacity-50 text-sm font-medium h-9"
+              className="flex items-center justify-center p-2 md:px-3 md:py-2 rounded-xl bg-indigo-800/60 hover:bg-indigo-700/70 transition-all text-indigo-200 hover:text-white disabled:opacity-50 h-8 w-8 md:h-9 md:w-auto font-medium"
             >
-              <RefreshCw size={16} className={isLoading ? 'animate-spin' : ''} />
-              <span className="hidden sm:inline">Novo Versículo</span>
+              <RefreshCw size={14} className={`md:w-4 md:h-4 ${isLoading ? 'animate-spin' : ''}`} />
+              <span className="hidden md:inline ml-2 text-sm">Novo Versículo</span>
             </button>
 
             {/* Auth Controls */}
@@ -244,13 +247,13 @@ function App() {
                 {/* Avatar Button */}
                 <button
                   onClick={() => setIsUserMenuOpen(v => !v)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-xl bg-indigo-800/60 hover:bg-indigo-700/70 transition-all text-white h-9"
+                  className="flex items-center gap-1.5 md:gap-2 p-1 md:px-3 md:py-2 rounded-xl bg-indigo-800/60 hover:bg-indigo-700/70 transition-all text-white h-8 md:h-9"
                   title="Minha conta"
                 >
-                  <div className="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-yellow-400 flex-shrink-0">
-                    <UserIcon size={14} />
+                  <div className="w-6 h-6 md:w-7 md:h-7 rounded-full bg-indigo-600 flex items-center justify-center text-yellow-400 flex-shrink-0">
+                    <UserIcon size={12} className="md:w-3.5 md:h-3.5" />
                   </div>
-                  <span className="text-sm font-semibold hidden sm:block max-w-[90px] truncate">
+                  <span className="text-xs md:text-sm font-semibold hidden md:block max-w-[90px] truncate">
                     {user.user_metadata?.display_name || user.email?.split('@')[0]}
                   </span>
                 </button>
@@ -292,10 +295,10 @@ function App() {
             ) : (
               <button
                 onClick={() => setIsAuthOpen(true)}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-yellow-400 to-orange-500 text-indigo-950 font-bold hover:from-yellow-300 hover:to-orange-400 transition-all text-sm shadow shadow-yellow-500/20 h-9"
+                className="flex items-center gap-1 md:gap-2 px-2.5 py-1.5 md:px-3 md:py-2 rounded-xl bg-gradient-to-r from-yellow-400 to-orange-500 text-indigo-950 font-bold hover:from-yellow-300 hover:to-orange-400 transition-all text-xs md:text-sm shadow shadow-yellow-500/20 h-8 md:h-9"
               >
-                <LogIn size={16} />
-                <span className="hidden sm:inline">Entrar</span>
+                <LogIn size={14} className="md:w-4 md:h-4" />
+                <span>Entrar</span>
               </button>
             )}
           </div>
@@ -309,28 +312,37 @@ function App() {
             <p className="text-indigo-300 font-medium animate-pulse">Viajando pelo universo bíblico...</p>
           </div>
         ) : (
-          <div className="flex flex-col h-full w-full">
-            <div className="flex-none pt-2 pb-4 z-10">
-              <DayNavigator />
-            </div>
+          <div className="flex flex-col min-h-full w-full">
+            {activeView === 'home' && (
+              <div className="flex flex-col min-h-full w-full">
+                <div className="flex-none pt-2 pb-4 z-10">
+                  <DayNavigator />
+                </div>
 
-            <div className="flex-1 flex items-start justify-center w-full">
-              <VerseCard onNewVerse={loadNewVerse} />
-            </div>
+                <div className="flex items-start justify-center w-full pb-8">
+                  <VerseCard onNewVerse={loadNewVerse} />
+                </div>
+              </div>
+            )}
+            {activeView === 'search' && (
+              <SearchPage
+                onBack={() => setActiveView('home')}
+                onStartMemorization={handleSearchMemorize}
+              />
+            )}
+            {activeView === 'history' && (
+              <HistoryPage
+                onBack={() => setActiveView('home')}
+              />
+            )}
           </div>
         )}
       </main>
 
-      <HistoryModal isOpen={isHistoryOpen} onClose={() => setIsHistoryOpen(false)} />
       <RecallVerseModal verse={recallVerse} onClose={() => setRecallVerse(null)} />
       <AchievementsModal isOpen={isAchievementsOpen} onClose={() => setIsAchievementsOpen(false)} />
       <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
       {user && <ProfileModal isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} user={user} />}
-      <SearchModal
-        isOpen={isSearchOpen}
-        onClose={() => setIsSearchOpen(false)}
-        onStartMemorization={handleSearchMemorize}
-      />
       <InstallPromptModal
         isOpen={showInstallModal}
         onClose={() => setShowInstallModal(false)}

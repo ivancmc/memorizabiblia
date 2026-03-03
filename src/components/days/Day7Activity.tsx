@@ -34,25 +34,25 @@ const Day7Activity: React.FC<Day7ActivityProps> = ({ verse, onComplete }) => {
         </motion.div>
       )}
 
-      <div className="flex justify-center gap-4 mt-8">
+      <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mt-8">
         <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           onClick={() => setShowHint(!showHint)}
-          className="bg-indigo-800 text-indigo-300 px-4 py-2 rounded-full flex items-center gap-2 font-bold hover:bg-indigo-700"
+          className="flex-1 flex items-center justify-center gap-2 bg-indigo-800/50 text-indigo-300 px-6 py-3.5 rounded-2xl font-bold hover:bg-indigo-700/60 transition-all border border-indigo-500/30 text-sm md:text-base"
         >
           <HelpCircle size={20} />
-          {showHint ? 'Esconder' : 'Espiar'}
+          <span>{showHint ? 'Esconder' : 'Espiar'}</span>
         </motion.button>
 
         <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           onClick={onComplete}
-          className="bg-yellow-500 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-yellow-600 flex items-center gap-2"
+          className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-indigo-950 px-6 py-3.5 rounded-2xl font-black shadow-xl shadow-yellow-500/10 hover:from-yellow-300 hover:to-orange-400 transition-all text-sm md:text-base"
         >
-          <CheckCircle size={24} />
-          Eu memorizei!
+          <CheckCircle size={20} />
+          <span>Memorizei!</span>
         </motion.button>
       </div>
     </div>

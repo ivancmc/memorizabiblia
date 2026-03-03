@@ -32,7 +32,7 @@ const Day2Activity: React.FC<Day2ActivityProps> = ({ verse, onComplete }) => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={onComplete}
-        className="mt-8 bg-pink-500 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-pink-600 transition-colors"
+        className="mt-4 bg-pink-500 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-pink-600 transition-colors"
       >
         Entendi
       </motion.button>
