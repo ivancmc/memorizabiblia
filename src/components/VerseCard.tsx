@@ -96,11 +96,11 @@ const VerseCard: React.FC<VerseCardProps> = ({ onNewVerse }) => {
       case 2: // Explicação
         return <Day2Activity verse={currentVerse} onComplete={handleComplete} />;
 
-      case 3: // Preencher Lacunas
-        return <Day3Activity verse={currentVerse} referenceOptions={referenceOptions} onComplete={handleComplete} />;
+      case 3: // Emojis
+        return <Day3Activity verse={currentVerse} onComplete={handleComplete} />;
 
-      case 4: // Emojis
-        return <Day4Activity verse={currentVerse} onComplete={handleComplete} />;
+      case 4: // Preencher Lacunas
+        return <Day4Activity verse={currentVerse} referenceOptions={referenceOptions} onComplete={handleComplete} />;
 
       case 5: // Ordenação (Scramble)
         return <Day5Activity verse={currentVerse} onComplete={handleComplete} />;
