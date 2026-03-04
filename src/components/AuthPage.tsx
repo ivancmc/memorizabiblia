@@ -117,7 +117,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onGuestEntry }) => {
                             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-indigo-400 group-focus-within:text-yellow-400 transition-colors" size={20} />
                             <input
                                 type="email"
-                                placeholder="Seu melhor e-mail"
+                                placeholder="Seu e-mail"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="w-full bg-indigo-950/50 border border-indigo-700/50 rounded-2xl py-4 pl-12 pr-4 text-white placeholder-indigo-400/50 outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-yellow-400/50 transition-all font-medium"
@@ -131,7 +131,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onGuestEntry }) => {
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-indigo-400 group-focus-within:text-yellow-400 transition-colors" size={20} />
                                 <input
                                     type="password"
-                                    placeholder="Sua senha secreta"
+                                    placeholder="Sua senha"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     className="w-full bg-indigo-950/50 border border-indigo-700/50 rounded-2xl py-4 pl-12 pr-4 text-white placeholder-indigo-400/50 outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-yellow-400/50 transition-all font-medium"
