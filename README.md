@@ -1,15 +1,19 @@
 <div align="center">
-  <img width="1200" height="475" alt="MemorizaBíblia Banner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 
   # 🧠 MemorizaBíblia
 
   **Transforme sua jornada de memorização bíblica com uma metodologia de 7 dias e tecnologia de ponta.**
 
+  [![Website](https://img.shields.io/badge/Acesse-memoriza--biblia.vercel.app-000000?style=flat&logo=vercel)](https://memoriza-biblia.vercel.app/)
   [![React](https://img.shields.io/badge/React-19-blue?logo=react)](https://react.dev/)
   [![Vite](https://img.shields.io/badge/Vite-6-646CFF?logo=vite)](https://vitejs.dev/)
   [![Supabase](https://img.shields.io/badge/Supabase-DB%20%26%20Auth-3ECF8E?logo=supabase)](https://supabase.com/)
   [![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
   [![PWA](https://img.shields.io/badge/PWA-Pronto-orange?logo=progressive-web-apps)](https://web.dev/progressive-web-apps/)
+
+  **[Acesse o Aplicativo aqui!](https://memoriza-biblia.vercel.app/)**
+
+  <img src="./public/img/app-screenshot.png" alt="Screenshot do MemorizaBíblia" width="800" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" />
 
 </div>
 
