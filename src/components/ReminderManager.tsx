@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Bell, BellOff, Settings, RefreshCw } from 'lucide-react';
 import ReminderTimeModal from './ReminderTimeModal';
 import { supabase } from '../services/supabase';
+import { useStore } from '../store';
+import { motion, AnimatePresence } from 'motion/react';
+import { X, LogIn, Lock } from 'lucide-react';
 
 const REMINDER_CONFIG_KEY = 'memorizakids_reminder_config';
 const VAPID_PUBLIC_KEY = import.meta.env.VITE_VAPID_PUBLIC_KEY;
@@ -10,6 +13,8 @@ const ReminderManager = () => {
   const [permission, setPermission] = useState('default');
   const [isRequesting, setIsRequesting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { user } = useStore();
+  const [isLockModalOpen, setIsLockModalOpen] = useState(false);
   const [isSubscribing, setIsSubscribing] = useState(false);
   const [reminderConfig, setReminderConfig] = useState<{ hour: number | null, minute: number | null }>(() => {
     const saved = localStorage.getItem(REMINDER_CONFIG_KEY);
@@ -152,6 +157,11 @@ const ReminderManager = () => {
   };
 
   const handleToggleReminders = () => {
+    if (!user) {
+      setIsLockModalOpen(true);
+      return;
+    }
+
     if (permission === 'default') {
       subscribeToPush();
     } else if (permission === 'granted') {
@@ -274,7 +284,7 @@ const ReminderManager = () => {
     <>
       <button
         onClick={handleToggleReminders}
-        disabled={permission === 'denied' || isSubscribing}
+        disabled={isSubscribing || (!!user && permission === 'denied')}
         className={`group text-sm font-medium flex items-center gap-3 w-full transition-all ${className}`}
         title={permission === 'granted' ? "Ajustar lembretes" : ""}
       >
@@ -287,7 +297,7 @@ const ReminderManager = () => {
           )}
         </div>
         <span className="font-medium">
-          {hasReminders ? `Lembretes · ${reminderConfig.hour.toString().padStart(2, '0')}h${reminderConfig.minute.toString().padStart(2, '0')}m` : text}
+          {!user ? 'Lembretes' : (hasReminders ? `Lembretes · ${reminderConfig.hour.toString().padStart(2, '0')}h${reminderConfig.minute.toString().padStart(2, '0')}m` : text)}
         </span>
       </button>
 
@@ -300,6 +310,51 @@ const ReminderManager = () => {
         initialMinute={reminderConfig.minute ?? 0}
         showDisable={hasReminders}
       />
+
+      <AnimatePresence>
+        {isLockModalOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-indigo-950/60 backdrop-blur-md"
+              onClick={() => setIsLockModalOpen(false)}
+            />
+
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="relative w-full max-w-sm bg-indigo-900 border border-indigo-700 rounded-3xl overflow-hidden shadow-2xl p-8 text-center"
+            >
+              <button
+                onClick={() => setIsLockModalOpen(false)}
+                className="absolute top-4 right-4 text-indigo-400 hover:text-white transition-colors"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="w-16 h-16 bg-indigo-800 rounded-2xl flex items-center justify-center mx-auto mb-6 ring-1 ring-indigo-700">
+                <Lock size={32} className="text-yellow-400" />
+              </div>
+
+              <h3 className="text-xl font-bold text-white mb-3">Recurso Exclusivo</h3>
+              <p className="text-indigo-200 text-sm leading-relaxed mb-8">
+                Para ativar os lembretes diários e garantir que você nunca esqueça de memorizar, você precisa estar conectado à sua conta.
+              </p>
+
+              <button
+                onClick={() => window.location.reload()} // Reload will trigger AuthPage since guest state is lost
+                className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 text-indigo-950 font-black py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 uppercase tracking-tight text-sm"
+              >
+                <LogIn size={18} />
+                Entrar ou Criar Conta
+              </button>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </>
   );
 };
