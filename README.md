@@ -4,7 +4,7 @@
 
   **Transforme sua jornada de memorização bíblica com uma metodologia de 7 dias e tecnologia de ponta.**
 
-  [![Website](https://img.shields.io/badge/Acesse-memoriza--biblia.vercel.app-000000?style=flat&logo=vercel)](https://memorizabiblia.vercel.app/)
+  [![Website](https://img.shields.io/badge/Acesse-memorizabiblia.vercel.app-000000?style=flat&logo=vercel)](https://memorizabiblia.vercel.app/)
   [![React](https://img.shields.io/badge/React-19-blue?logo=react)](https://react.dev/)
   [![Vite](https://img.shields.io/badge/Vite-6-646CFF?logo=vite)](https://vitejs.dev/)
   [![Supabase](https://img.shields.io/badge/Supabase-DB%20%26%20Auth-3ECF8E?logo=supabase)](https://supabase.com/)
