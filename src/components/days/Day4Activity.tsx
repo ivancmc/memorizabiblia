@@ -92,7 +92,7 @@ const Day4Activity: React.FC<Day4ActivityProps> = ({ verse, referenceOptions, on
           className="bg-yellow-500/20 text-yellow-400 border border-yellow-500/50 px-4 py-2 rounded-full flex items-center gap-2 font-bold hover:bg-yellow-500/30"
         >
           <HelpCircle size={20} />
-          {showHint ? 'Esconder dica' : 'Ver dica'}
+          {showHint ? 'Esconder' : 'Ver dica'}
         </motion.button>
 
         <motion.button
