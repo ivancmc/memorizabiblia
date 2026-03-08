@@ -12,9 +12,9 @@ const Day2Activity: React.FC<Day2ActivityProps> = ({ verse, onComplete }) => {
     <div className="text-center space-y-6">
       <h2 className="text-2xl font-bold text-pink-400 mb-4">Dia 2: O que significa?</h2>
       <p className="text-lg text-indigo-400 italic">
-        "{verse.text}"
+        "{verse.text}"<br/>
+        <span className="font-bold not-italic text-pink-400 ml-2">{verse.reference}</span>
       </p>
-      <span className="font-bold not-italic text-pink-400 ml-2">{verse.reference}</span>
       <div className="bg-indigo-950/50 p-6 rounded-2xl border-2 border-pink-500/30">
         <p className="text-xl text-indigo-100 leading-relaxed mb-4">
           {verse.explanation}
